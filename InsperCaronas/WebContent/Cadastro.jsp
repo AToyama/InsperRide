@@ -12,14 +12,14 @@
 
 
     
-	<form method='post'>
+	<form method='post' enctype="multipart/form-data">
 		Nome: <input type='text' name='nome'>
 		E-Mail: <input type='text' name='email'>
 		Senha: <input type='password' name='senha'>
 		Telefone: <input type='text' name='telefone'>
+		Foto: <input type='file' name='photo'>
 		<input type='submit' name='submit' value='Submit'>
 	</form>
-	<table>	
 			
 </body>
 </html>

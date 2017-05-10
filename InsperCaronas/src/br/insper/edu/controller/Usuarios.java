@@ -1,5 +1,6 @@
 package br.insper.edu.controller;
 
+import java.io.InputStream;
 import java.sql.Date;
 
 public class Usuarios {
@@ -8,7 +9,15 @@ public class Usuarios {
 	private String email;
 	private String senha;
 	private String telefone;
+	private InputStream inputStream;
 	
+	
+	public InputStream getPhoto(){
+		return inputStream;
+	}
+	public void setInputStream(InputStream inputStream){
+		this.inputStream = inputStream;
+	}
 	public Integer getId() {
 		return id;
 	}
