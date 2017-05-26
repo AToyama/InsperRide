@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Receber Carona</title>
+<title>Dar Carona</title>
 </head>
 <body>
 

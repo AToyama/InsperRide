@@ -4,9 +4,17 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Receber Carona</title>
+<title>InsperRide</title>
 </head>
 <body>
+
+<form method='post' enctype="multipart/form-data">
+		E-Mail: <input type='text' name='email_login'>
+		Senha: <input type='password' name='senha_login'>
+		<input type='submit' name='login' value='Login'>
+		<input type='submit' name='cadastrar' value='Cadastrar'>
+		
+	</form>
 
 </body>
 </html>
