@@ -1,0 +1,15 @@
+.submit{
+	background-color: #262626;
+    border-radius: 2px;
+    color: white;
+    padding: 4em 5em;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+
+}
+
+.submit:hover{
+	background-color:#ff3333;
+}
