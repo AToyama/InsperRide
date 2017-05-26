@@ -4,11 +4,15 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.mysql.jdbc.PreparedStatement;
 
 import br.insper.edu.controller.Usuarios;
 import br.insper.edu.controller.Caronas;
+
 
 public class DAO {
 	private Connection connection = null;
@@ -45,16 +49,98 @@ public class DAO {
 		}
 		
 	}
-	public void adicionaCarona(Caronas carona){
-		String sql = "INSERT into carona"+"(indo,ativa,usuario_id,endereco,horario,tolerancia,placa,carro,vagas,observacao,usuario_1,usuario_2,usuario_3,usuario_4,efetivada,bairro) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+	public int getUsuarioId(String email){
+		int usuarioId = 0;
+		String sql = "select id from usuario where email=?";
 		PreparedStatement stmt;
-		try {
+		ResultSet rs;
+		try{
 			stmt = (PreparedStatement) connection.prepareStatement(sql);
-			stmt.setString(1, carona.getIndo());
-			stmt.setString(2, carona.getAtiva());
+			stmt.setString(1, email);
+			rs = stmt.executeQuery();
+			rs.next();
+			usuarioId = rs.getInt("id");
+			//System.out.println(usuarioId);
+			rs.close();
+			stmt.close();
+		}catch (SQLException e){
+        	// TODO Auto-generated catch block
+        	e.printStackTrace();
+        }
+		return usuarioId;
+	}
+	public Timestamp getCurrentTime(){
+		Timestamp time = null;
+		String sql = "SELECT current_timestamp()";
+		PreparedStatement stmt;
+		ResultSet rs;
+		try{
+			stmt= (PreparedStatement) connection.prepareStatement(sql);
+			rs = stmt.executeQuery();
+			rs.next();
+			time = rs.getTimestamp("current_timestamp()");
+			rs.close();
+			stmt.close();
 		}catch(SQLException e){
 			e.printStackTrace();
 		}
+		return time;
+	}
+	public void adicionaCarona(Caronas carona){
+		String sql = "INSERT into carona"+"(indo,usuario_id,endereco,horario,tolerancia,placa,carro,vagas,observacao,bairro,ativa,efetivada,usuario_1,usuario_2,usuario_3,usuario_4) values(?,?,?,?,?,?,?,?,?,?,S,N,NULL,NULL,NULL,NULL)";
+		PreparedStatement stmt;
+		try {
+			stmt = (PreparedStatement) connection.prepareStatement(sql);
+			System.out.println("adiciona carona");
+			stmt.setString(1, carona.getIndo());
+			stmt.setInt(2,carona.getUsuarioId());
+			stmt.setString(3, carona.getEndereco());
+			stmt.setTimestamp(4, carona.getHorario());
+			stmt.setTimestamp(5, carona.getTolerancia());
+			stmt.setString(6, carona.getPlaca());
+			stmt.setString(7, carona.getCarro());
+			stmt.setInt(8, carona.getVagas());
+			stmt.setString(9, carona.getObs());
+			stmt.setString(10, carona.getBairro());
+			stmt.execute();
+			stmt.close();
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+	}
+	public List<Caronas> listaCaronas(){
+		List<Caronas> caronas = new ArrayList<Caronas>();
+		
+		PreparedStatement stmt;
+		
+		try {
+			stmt = (PreparedStatement) connection.prepareStatement("SELECT * FROM carona");
+			ResultSet rs = stmt.executeQuery();
+			
+			while (rs.next()) {
+				Caronas carona = new Caronas();
+				carona.setAtiva(rs.getString("ativa"));
+				carona.setBairro(rs.getString("bairro"));
+				carona.setCarro(rs.getString("carro"));
+				carona.setEfetivada(rs.getString("efetivada"));
+				carona.setEndereco(rs.getString("endereco"));
+				carona.setHorario(rs.getTimestamp("horario"));
+				carona.setIndo(rs.getString("indo"));
+				carona.setObs(rs.getString("observacao"));
+				carona.setPlaca(rs.getString("placa"));
+				carona.setTolerancia(rs.getTimestamp("tolerancia"));
+				carona.setVagas(rs.getInt("vagas"));
+				caronas.add(carona);
+			}
+			
+			rs.close();
+			stmt.close();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return caronas;
 	}
 	public boolean valida(String email, String senha){
 		boolean status = false;
