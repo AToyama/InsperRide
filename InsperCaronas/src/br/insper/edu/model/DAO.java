@@ -87,11 +87,11 @@ public class DAO {
 		return time;
 	}
 	public void adicionaCarona(Caronas carona){
-		String sql = "INSERT into carona"+"(indo,usuario_id,endereco,horario,tolerancia,placa,carro,vagas,observacao,bairro,ativa,efetivada,usuario_1,usuario_2,usuario_3,usuario_4) values(?,?,?,?,?,?,?,?,?,?,S,N,NULL,NULL,NULL,NULL)";
+		String sql = "INSERT into carona"+"(indo,usuario_id,endereco,horario,tolerancia,placa,carro,vagas,observacao,bairro,ativa,efetivada,usuario_1,usuario_2,usuario_3,usuario_4) values(?,?,?,?,?,?,?,?,?,?,'S','N',NULL,NULL,NULL,NULL)";
 		PreparedStatement stmt;
 		try {
 			stmt = (PreparedStatement) connection.prepareStatement(sql);
-			System.out.println("adiciona carona");
+			//System.out.println("adiciona carona");
 			stmt.setString(1, carona.getIndo());
 			stmt.setInt(2,carona.getUsuarioId());
 			stmt.setString(3, carona.getEndereco());
@@ -120,6 +120,7 @@ public class DAO {
 			while (rs.next()) {
 				Caronas carona = new Caronas();
 				carona.setAtiva(rs.getString("ativa"));
+				carona.setUsuarioId(rs.getInt("usuario_id"));
 				carona.setBairro(rs.getString("bairro"));
 				carona.setCarro(rs.getString("carro"));
 				carona.setEfetivada(rs.getString("efetivada"));
@@ -130,6 +131,10 @@ public class DAO {
 				carona.setPlaca(rs.getString("placa"));
 				carona.setTolerancia(rs.getTimestamp("tolerancia"));
 				carona.setVagas(rs.getInt("vagas"));
+				carona.setUsuario1(rs.getInt("usuario_1"));
+				carona.setUsuario2(rs.getInt("usuario_2"));
+				carona.setUsuario3(rs.getInt("usuario_3"));
+				carona.setUsuario4(rs.getInt("usuario_4"));
 				caronas.add(carona);
 			}
 			

@@ -40,6 +40,8 @@ public class Servlet extends HttpServlet {
 		
 		Caronas nova_carona = new Caronas();
 		
+		HttpSession session = request.getSession();
+		
 		
 		String page = "";
 		
@@ -51,7 +53,6 @@ public class Servlet extends HttpServlet {
 			String email = request.getParameter("email_login");
 			String senha = request.getParameter("senha_login");
 			if(dao.valida(email, senha)){
-				HttpSession session = request.getSession();
 				session.setAttribute("user", email);
 				session.setMaxInactiveInterval(30*60);
 				Cookie userEmail = new Cookie("email", email);
@@ -82,17 +83,19 @@ public class Servlet extends HttpServlet {
 			page = "Login.jsp";
 		}
 		if(request.getParameter("criar_carona")!=null){
-			System.out.println("adiciona carona");
+			//System.out.println("adiciona carona");
 			nova_carona.setIndo(request.getParameter("indo"));
+			
 			nova_carona.setEndereco(request.getParameter("endereco"));
 			nova_carona.setPlaca(request.getParameter("placa"));
 			nova_carona.setCarro(request.getParameter("carro"));
-			nova_carona.setVagas(Integer.parseInt(request.getParameter("vagas")));
+			nova_carona.setVagas(Integer.valueOf(request.getParameter("vagas")));
 			nova_carona.setObs(request.getParameter("observacao"));
 			nova_carona.setBairro(request.getParameter("bairro"));
 			nova_carona.setHorario(dao.getCurrentTime());
 			nova_carona.setTolerancia(dao.getCurrentTime());
-			nova_carona.setUsuarioId(1);
+			String email = (String) session.getAttribute("user");
+			nova_carona.setUsuarioId(dao.getUsuarioId(email));
 			
 			dao.adicionaCarona(nova_carona);
 			
