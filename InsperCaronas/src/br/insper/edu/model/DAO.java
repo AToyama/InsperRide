@@ -1,5 +1,6 @@
 package br.insper.edu.model;
 
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -49,6 +50,7 @@ public class DAO {
 		}
 		
 	}
+	
 	public int getUsuarioId(String email){
 		int usuarioId = 0;
 		String sql = "select id from usuario where email=?";
@@ -107,6 +109,76 @@ public class DAO {
 		}catch(SQLException e){
 			e.printStackTrace();
 		}
+	}
+	public void usuario1(Caronas carona){
+		String sql = "UPDATE carona SET usuario_1=? WHERE placa=?";
+		PreparedStatement stmt;
+		try {
+			stmt = (PreparedStatement) connection.prepareStatement(sql);
+			stmt.setInt(1,carona.getUsuarioId());
+			stmt.setString(2, carona.getPlaca());
+			stmt.execute();
+			stmt.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	public void usuario2(Caronas carona){
+		String sql = "UPDATE carona SET usuario_2=? WHERE placa=?";
+		PreparedStatement stmt;
+		try {
+			stmt = (PreparedStatement) connection.prepareStatement(sql);
+			stmt.setInt(1,carona.getUsuarioId());
+			stmt.setString(2, carona.getPlaca());
+			stmt.execute();
+			stmt.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	public void usuario3(Caronas carona){
+		String sql = "UPDATE carona SET usuario_3=? WHERE placa=?";
+		PreparedStatement stmt;
+		try {
+			stmt = (PreparedStatement) connection.prepareStatement(sql);
+			stmt.setInt(1,carona.getUsuarioId());
+			stmt.setString(2, carona.getPlaca());
+			stmt.execute();
+			stmt.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}	
+	public void usuario4(Caronas carona){
+		String sql = "UPDATE carona SET usuario_4=? WHERE placa=?";
+		PreparedStatement stmt;
+		try {
+			stmt = (PreparedStatement) connection.prepareStatement(sql);
+			stmt.setInt(1,carona.getUsuarioId());
+			stmt.setString(2, carona.getPlaca());
+			stmt.execute();
+			stmt.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	public void updateVagas(Caronas carona){
+		String sql = "UPDATE carona SET vagas=? WHERE placa=?";
+		PreparedStatement stmt;
+		try {
+			stmt = (PreparedStatement) connection.prepareStatement(sql);
+			stmt.setInt(1, carona.getVagas());
+			stmt.setString(2, carona.getPlaca());
+			stmt.execute();
+			stmt.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
 	}
 	public List<Caronas> listaCaronas(){
 		List<Caronas> caronas = new ArrayList<Caronas>();
