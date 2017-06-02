@@ -74,6 +74,9 @@ public class Servlet extends HttpServlet {
 		else if(request.getParameter("receber_carona")!=null){
 			page="ReceberCarona.jsp";
 		}
+		else if(request.getParameter("minha_carona")!=null){
+			page="CaronaAberta.jsp";
+		}
         Part filePart = request.getPart("photo");
 		if(request.getParameter("submit")!=null){
 			novo_usuario.setInputStream(filePart.getInputStream());
@@ -85,7 +88,7 @@ public class Servlet extends HttpServlet {
 			dao.adicionaUsuario(novo_usuario);
 			page = "Login.jsp";
 		}
-		if(request.getParameter("criar_carona")!=null){
+		if(request.getParameter("criar_carona_indo")!=null){
 			//System.out.println(request.getParameter("tolerancia").replace("T"," "));
 			String time=(String)request.getParameter("horario").replace("T"," ");
 			time+=":00";
@@ -93,7 +96,7 @@ public class Servlet extends HttpServlet {
 			String tolerance=(String)request.getParameter("horario").replace("T"," ");
 			tolerance+=":00";
 			
-			nova_carona.setIndo(request.getParameter("indo"));
+			nova_carona.setIndo("s");
 			nova_carona.setEndereco(request.getParameter("endereco"));
 			nova_carona.setPlaca(request.getParameter("placa"));
 			nova_carona.setCarro(request.getParameter("carro"));
@@ -110,9 +113,51 @@ public class Servlet extends HttpServlet {
 			
 			dao.adicionaCarona(nova_carona);
 			
-			page = "Home.jsp";
+			page = "CaronaAberta.jsp";
+		}
+		
+		if(request.getParameter("criar_carona_saindo")!=null){
+			//System.out.println(request.getParameter("tolerancia").replace("T"," "));
+			String time=(String)request.getParameter("horario").replace("T"," ");
+			time+=":00";
+			//System.out.println(time);
+			String tolerance=(String)request.getParameter("horario").replace("T"," ");
+			tolerance+=":00";
+			
+			nova_carona.setIndo("n");
+			nova_carona.setEndereco(request.getParameter("endereco"));
+			nova_carona.setPlaca(request.getParameter("placa"));
+			nova_carona.setCarro(request.getParameter("carro"));
+			nova_carona.setVagas(Integer.valueOf(request.getParameter("vagas")));
+			nova_carona.setObs(request.getParameter("observacao"));
+			nova_carona.setHorario(Timestamp.valueOf(tolerance));
+			nova_carona.setTolerancia(Timestamp.valueOf(time));
+			nova_carona.setBairro(request.getParameter("bairro"));
+			//nova_carona.setHorario(dao.getCurrentTime());
+			//nova_carona.setTolerancia(dao.getCurrentTime());
+			//System.out.println(request.getParameter("horario"));
+			String email = (String) session.getAttribute("user");
+			nova_carona.setUsuarioId(dao.getUsuarioId(email));
+			
+			dao.adicionaCarona(nova_carona);
+			
+			page = "CaronaAberta.jsp";
 		}
 		for (Caronas carona : caronas) {
+			if(request.getParameter("cancelar_carona_"+carona.getUsuarioId())!=null){
+				System.out.println("entrou");
+				dao.remove(carona);
+				
+				page="Home.jsp";				
+			}
+			if(request.getParameter("efetivar_carona_"+carona.getUsuarioId())!=null){
+				System.out.println("entrou efetivar");
+				carona.setEfetivada("S");
+				dao.efetivaCarona(carona);
+				
+				page="Home.jsp";				
+			}
+			
 			if(request.getParameter("carona_"+carona.getPlaca())!=null){
 				int vagas=carona.getVagas();
 				String email = (String) session.getAttribute("user");

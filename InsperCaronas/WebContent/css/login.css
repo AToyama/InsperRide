@@ -7,13 +7,13 @@ html {
 }
 
 body {
-  background-image: url("highway.jpg");
+  background: #cccccc;
   background-position: center center;
 }
 
 
 .form {
-  background: rgba(0, 0, 0, 0.62);
+  background:#333333;
   padding: 40px;
   max-width: 600px;
   margin: 40px auto;

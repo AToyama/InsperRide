@@ -36,12 +36,7 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <span>
                     <ul class="nav navbar-nav">
-                        <li>
-                            <a href="#">Quero Carona</a>
-                        </li>
-                        <li>
-                            <a href="#">Dar Carona</a>
-                        </li>
+                 
                         <li class ="sair">
                             <a href="#">Sair</a>
                         </li>
@@ -79,33 +74,39 @@
 					email = (String) session.getAttribute("user");
             		
             		DAO dao = new DAO();
+            		
+            		Caronas carona = new Caronas();
             		            		
-            		dao.getCaronaAtiva(dao.getUsuarioId(email));
+            		carona = dao.getCaronaAtiva(dao.getUsuarioId(email));
+            		
+            		if("N".equals(carona.getEfetivada())){
 				
-					%>
-                    <br>
-                    Pessoas Confirmadas:
-                    <br>
-                    <%=carona.getUsuario1()%>
-                    <%=carona.getUsuario2()%>
-                    <%=carona.getUsuario3()%>
-                    <%=carona.getUsuario4()%>
-                    <!-- <img src="user.jpg" class="img-circle" alt="user" width="20%">
-                    <img src="user.jpg" class="img-circle" alt="user" width="20%">
-                    <img src="user.jpg" class="img-circle" alt="user" width="20%"> -->
-                    <br>
-                    <br> 
-                    Vagas Disponíveis: <%=carona.getVagas()%>
-                    <br>
-                    <br>
-                    Tempo restante: 6 minutos 
-                    <br>
-                    <br>
-                    <%} %>
-                    <div class="col-md-4 portfolio-item">
-                        <button class="w3-button w3-block w3-dark-grey" name="cancelar_carona">CANCELAR</button>
-                        <br>
-                        <button class="w3-button w3-block w3-dark-grey" name="">PARTIR</button>
+						%>
+	                    <br>
+	                    Pessoas Confirmadas:
+	                    <br>
+	                    <img src="<%=dao.getPhotoUsuarioId(carona.getUsuario1())%>" height="100" width="100">
+	                    <img src="<%=dao.getPhotoUsuarioId(carona.getUsuario2())%>" height="100" width="100">
+	                    <img src="<%=dao.getPhotoUsuarioId(carona.getUsuario3())%>" height="100" width="100">
+	                    <img src="<%=dao.getPhotoUsuarioId(carona.getUsuario4())%>" height="100" width="100">
+	                    <br>
+	                    <br> 
+	                    Vagas Disponíveis: <%=carona.getVagas()%>
+	                    <br>
+	                    <br>
+	                    Horario de Saída: <%=carona.getHorario() %>
+	                    <br>
+	                    <br>
+	                    
+	                    <div class="col-md-4 portfolio-item">
+	                    <form method='post' enctype="multipart/form-data">
+	                    	<input type="submit"class="w3-button w3-block w3-dark-grey" name="cancelar_carona_<%=carona.getUsuarioId() %>" value = "CANCELAR">
+	                        <br>
+	                        <input type="submit" class="w3-button w3-block w3-dark-grey" name="efetivar_carona_<%=carona.getUsuarioId() %>" value="PARTIR">
+	                    </form>
+	                    
+	                    <%} %>
+                        
                     </div> 
                 </div>                            
             </div>
@@ -123,10 +124,42 @@
             <div class="row">
                 <div class="col-md-8 portfolio-item">
                 <br>
-                    </div>
-                </div>
-            </div>
-        </div> 
+               <% 
+          email = (String) session.getAttribute("user");
+          List<Caronas> caronas = dao.getCaronasEfetivadas(dao.getUsuarioId(email));
+          
+          for (Caronas carona_ef : caronas) {
+        	  
+        	  System.out.println(caronas);
+        	  
+	            
+	           %>
+	           <div class="col-md-4 portifolio-item">
+	            	<div class="w3-container">
+	            		<div class="w3-card-4" style="width:70%">
+	            			<header class="w3-container w3-light-grey">
+	            				<h3><%=carona_ef.getHorario() %></h3>
+	            			</header>
+	            			<p><%=dao.getNomeFromId(carona_ef.getUsuario1()) %>
+	            			<img src="<%=dao.getPhotoUsuarioId(carona.getUsuario1())%>" height="100" width="100">
+	            			<p><%=dao.getNomeFromId(carona_ef.getUsuario2()) %>
+		                    <img src="<%=dao.getPhotoUsuarioId(carona.getUsuario2())%>" height="100" width="100">
+		                    <p><%=dao.getNomeFromId(carona_ef.getUsuario3()) %>
+		                    <img src="<%=dao.getPhotoUsuarioId(carona.getUsuario3())%>" height="100" width="100">
+		                    <p><%=dao.getNomeFromId(carona_ef.getUsuario4()) %>
+		                    <img src="<%=dao.getPhotoUsuarioId(carona.getUsuario4())%>" height="100" width="100">
+	            			<p><%=carona_ef.getBairro()%> - <%=carona_ef.getEndereco()%></p>
+
+	            		<form method='post' enctype="multipart/form-data">
+	            
+	            	</div>
+	            </div>
+	        </div>
+	        <br>
+		<% } %>
+                           </div>
+        </div>
+      
 
         <hr>
 

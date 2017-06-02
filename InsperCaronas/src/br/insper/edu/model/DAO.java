@@ -242,7 +242,7 @@ public class DAO {
 	}
 
 	public void efetivaCarona(Caronas carona){
-		String sql = "UPDATE Caronas SET efetivada=? WHERE placa=?";
+		String sql = "UPDATE carona SET efetivada=? WHERE placa=?";
 		PreparedStatement stmt;
 		try {
 			stmt = (PreparedStatement) connection.prepareStatement(sql);
@@ -294,6 +294,130 @@ public class DAO {
 			e.printStackTrace();
 		}
 		return caronas;
+	}
+	
+	
+	
+	public Caronas getCaronaAtiva(int usuarioId){
+		Caronas carona = new Caronas();
+		String sql="SELECT * FROM carona WHERE usuario_id = ?";
+		PreparedStatement stmt;
+		ResultSet rs;
+		try{
+			
+        	stmt = (PreparedStatement) connection.prepareStatement(sql);
+        	stmt.setInt(1, usuarioId);
+        	rs= stmt.executeQuery();
+        	rs.next();
+			carona.setAtiva(rs.getString("ativa"));
+			carona.setUsuarioId(rs.getInt("usuario_id"));
+			carona.setBairro(rs.getString("bairro"));
+			carona.setCarro(rs.getString("carro"));
+			carona.setEfetivada(rs.getString("efetivada"));
+			carona.setEndereco(rs.getString("endereco"));
+			carona.setHorario(rs.getTimestamp("horario"));
+			carona.setIndo(rs.getString("indo"));
+			carona.setObs(rs.getString("observacao"));
+			carona.setPlaca(rs.getString("placa"));
+			carona.setTolerancia(rs.getTimestamp("tolerancia"));
+			carona.setVagas(rs.getInt("vagas"));
+			carona.setUsuario1(rs.getInt("usuario_1"));
+			carona.setUsuario2(rs.getInt("usuario_2"));
+			carona.setUsuario3(rs.getInt("usuario_3"));
+			carona.setUsuario4(rs.getInt("usuario_4"));
+			stmt.execute();
+        	rs.close();
+        	stmt.close();
+        } catch (SQLException e){
+        	// TODO Auto-generated catch block
+        	e.printStackTrace();
+        }
+		return carona;
+	}
+	public void remove(Caronas carona){
+		PreparedStatement stmt;
+		try {
+			stmt = (PreparedStatement) connection.prepareStatement("DELETE FROM carona WHERE placa=?");
+			stmt.setString(1, carona.getPlaca());
+			stmt.execute();
+			stmt.close();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public List<Caronas> getCaronasEfetivadas(int usuarioId){
+		
+		String nome_usuario = null;
+		List<Caronas> caronas = new ArrayList<Caronas>();
+		
+		String sql = "SELECT * FROM carona WHERE usuario_id=? AND efetivada='S'";
+		PreparedStatement stmt;
+		ResultSet rs;
+		try {
+			stmt = (PreparedStatement) connection.prepareStatement(sql);
+			stmt.setInt(1, usuarioId);
+			rs = stmt.executeQuery();
+			while (rs.next()) {
+				Caronas carona = new Caronas();
+				carona.setAtiva(rs.getString("ativa"));
+				carona.setUsuarioId(rs.getInt("usuario_id"));
+				carona.setBairro(rs.getString("bairro"));
+				carona.setCarro(rs.getString("carro"));
+				carona.setEfetivada(rs.getString("efetivada"));
+				carona.setEndereco(rs.getString("endereco"));
+				carona.setHorario(rs.getTimestamp("horario"));
+				carona.setIndo(rs.getString("indo"));
+				carona.setObs(rs.getString("observacao"));
+				carona.setPlaca(rs.getString("placa"));
+				carona.setTolerancia(rs.getTimestamp("tolerancia"));
+				carona.setVagas(rs.getInt("vagas"));
+				carona.setUsuario1(rs.getInt("usuario_1"));
+				carona.setUsuario2(rs.getInt("usuario_2"));
+				carona.setUsuario3(rs.getInt("usuario_3"));
+				carona.setUsuario4(rs.getInt("usuario_4"));
+				caronas.add(carona);
+			}
+			
+			stmt.execute();
+			rs.close();
+			stmt.close();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return caronas;
+	}
+	
+	public String getNomeFromId(int usuarioId){
+		
+		String nome_usuario = null;
+		
+		String sql = "SELECT nome FROM usuario WHERE id=?";
+		PreparedStatement stmt;
+		ResultSet rs;
+		try {
+			stmt = (PreparedStatement) connection.prepareStatement(sql);
+			stmt.setInt(1, usuarioId);
+			rs = stmt.executeQuery();
+			rs.next();
+			nome_usuario = rs.getString("nome");
+			
+			stmt.execute();
+			
+			rs.close();
+			stmt.close();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return nome_usuario;
 	}
 	public boolean valida(String email, String senha){
 		boolean status = false;

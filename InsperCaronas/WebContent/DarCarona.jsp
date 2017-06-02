@@ -33,12 +33,7 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <span>
                     <ul class="nav navbar-nav">
-                        <li>
-                            <a href="#">Quero Carona</a>
-                        </li>
-                        <li>
-                            <a href="#">Dar Carona</a>
-                        </li>
+                       
                         <li class ="sair">
                             <a href="#">Sair</a>
                         </li>
@@ -73,18 +68,20 @@
             <div class="row">
                 <div class="col-md-8 portfolio-item">
                     <div class="w3-container">
-                        <form>
-                            Bairro destino: <input type="text" name="bairro" size="61"><br><br>
-                            Horário: <input type="time" name="horario">
-                            Tolerância: <input type="text" name="tolerancia"><br><br>
+                        <form method='post' enctype="multipart/form-data">
+                            Bairro saída: <input type="text" name="bairro" size="61"><br><br>
+                            Endereço saída: <input type="text" name="endereco" size="61"><br><br>
+                            Horário: <input type="datetime-local" name="horario">
+                            Tolerância: <input type="datetime-local" name="tolerancia"><br><br>
                             Carro: <input type="text" name="carro" size="20">
                             Placa: <input type="text" name="placa" size="8">
                             Vagas: <input type="number" name="vagas" min="1" max="4"><br><br>
                             Observações: <input type="text" name="observacao" size="80"><br><br>
-                        </form>
+                        	<input type="submit" name='criar_carona_indo' value='Criar Carona' class="w3-button w3-block w3-dark-grey">
+                            </form>
                         <div class="col-md-4 portfolio-item">
                             <div class="w3-container">
-                                <button type="sunmit" name='criar_carona' value='Criar Carona' class="w3-button w3-block w3-dark-grey">ABRIR CARONA</button>
+                                
                             </div>                       
                         </div>                    
                     </div>
@@ -101,18 +98,21 @@
             <div class="row">
                 <div class="col-md-8 portfolio-item">
                     <div class="w3-container">
-                        <form action="Home.jsp">
-                            Bairro saída: <input type="text" name="bairro" size="63"><br><br>
-                            Horário: <input type="time" name="horario">
-                            Tolerância: <input type="text" name="tolerancia"><br><br>
+                        <form method='post' enctype="multipart/form-data">
+                            Bairro destino: <input type="text" name="bairro" size="63"><br><br>
+                            Endereço destino: <input type="text" name="endereco" size="63"><br><br>
+                            Horário: <input type="datetime-local" name="horario">
+                            Tolerância: <input type="datetime-local" name="tolerancia"><br><br>
                             Carro: <input type="text" name="carro" size="20">
                             Placa: <input type="text" name="placa" size="8">
                             Vagas: <input type="number" name="vagas" min="1" max="4"><br><br>
                             Observações: <input type="text" name="observacao" size="80"><br><br>
-                        </form>
+                            <input class="w3-button w3-block w3-dark-grey" type="submit" name='criar_carona_saindo' value='Criar Carona'>
+                                </form>
+                        
                         <div class="col-md-4 portfolio-item">
                             <div class="w3-container">
-                                <button class="w3-button w3-block w3-dark-grey" type="submit" name='criar_carona' value='Criar Carona'>ABRIR CARONA</button>
+                                
                             </div>
                         </div>
                     </div>
