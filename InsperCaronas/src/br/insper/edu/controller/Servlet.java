@@ -3,6 +3,7 @@ import br.insper.edu.model.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.sql.Timestamp;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -85,17 +86,25 @@ public class Servlet extends HttpServlet {
 			page = "Login.jsp";
 		}
 		if(request.getParameter("criar_carona")!=null){
-			//System.out.println("adiciona carona");
-			nova_carona.setIndo(request.getParameter("indo"));
+			//System.out.println(request.getParameter("tolerancia").replace("T"," "));
+			String time=(String)request.getParameter("horario").replace("T"," ");
+			time+=":00";
+			//System.out.println(time);
+			String tolerance=(String)request.getParameter("horario").replace("T"," ");
+			tolerance+=":00";
 			
+			nova_carona.setIndo(request.getParameter("indo"));
 			nova_carona.setEndereco(request.getParameter("endereco"));
 			nova_carona.setPlaca(request.getParameter("placa"));
 			nova_carona.setCarro(request.getParameter("carro"));
 			nova_carona.setVagas(Integer.valueOf(request.getParameter("vagas")));
 			nova_carona.setObs(request.getParameter("observacao"));
+			nova_carona.setHorario(Timestamp.valueOf(tolerance));
+			nova_carona.setTolerancia(Timestamp.valueOf(time));
 			nova_carona.setBairro(request.getParameter("bairro"));
-			nova_carona.setHorario(dao.getCurrentTime());
-			nova_carona.setTolerancia(dao.getCurrentTime());
+			//nova_carona.setHorario(dao.getCurrentTime());
+			//nova_carona.setTolerancia(dao.getCurrentTime());
+			//System.out.println(request.getParameter("horario"));
 			String email = (String) session.getAttribute("user");
 			nova_carona.setUsuarioId(dao.getUsuarioId(email));
 			
@@ -104,55 +113,50 @@ public class Servlet extends HttpServlet {
 			page = "Home.jsp";
 		}
 		for (Caronas carona : caronas) {
-			if(request.getParameter("carona_"+carona.getEfetivada())=="nao"){
-				if(request.getParameter("carona_"+carona.getPlaca())!=null){
-					int vagas=carona.getVagas();
-					String email = (String) session.getAttribute("user");
-					
-					if (vagas!=0){
-						if(vagas==4){
-							carona.setUsuarioId(dao.getUsuarioId(email));
-							dao.usuario4(carona);
-							vagas--;
-							carona.setVagas(vagas);
-							dao.updateVagas(carona);
-						}
-						else if(vagas==3){
-							carona.setUsuarioId(dao.getUsuarioId(email));
-							dao.usuario3(carona);
-							vagas--;
-							carona.setVagas(vagas);
-							dao.updateVagas(carona);
-						}
-						else if(vagas==2){
-							carona.setUsuarioId(dao.getUsuarioId(email));
-							dao.usuario2(carona);
-							vagas--;
-							carona.setVagas(vagas);
-							dao.updateVagas(carona);
-						}
-						else if(vagas==1){
-							carona.setUsuarioId(dao.getUsuarioId(email));
-							dao.usuario1(carona);
-							vagas--;
-							carona.setVagas(vagas);
-							dao.updateVagas(carona);
-						}
+			if(request.getParameter("carona_"+carona.getPlaca())!=null){
+				int vagas=carona.getVagas();
+				String email = (String) session.getAttribute("user");
+				if (vagas!=0){
+					if(vagas==4){
+						carona.setUsuarioId(dao.getUsuarioId(email));
+						dao.usuario4(carona);
+						vagas--;
+						carona.setVagas(vagas);
+						dao.updateVagas(carona);
 					}
-					else{
-						System.out.println("não há vaga disponível");
+					else if(vagas==3){
+						carona.setUsuarioId(dao.getUsuarioId(email));
+						dao.usuario3(carona);
+						vagas--;
+						carona.setVagas(vagas);
+						dao.updateVagas(carona);
 					}
-				}					
-				page="ReceberCarona.jsp";
+					else if(vagas==2){
+						carona.setUsuarioId(dao.getUsuarioId(email));
+						dao.usuario2(carona);
+						vagas--;
+						carona.setVagas(vagas);
+						dao.updateVagas(carona);
+					}
+					else if(vagas==1){
+						carona.setUsuarioId(dao.getUsuarioId(email));
+						dao.usuario1(carona);
+						vagas--;
+						carona.setVagas(vagas);
+						dao.updateVagas(carona);
+					}
+				}
+				else{
+					System.out.println("não há vaga disponível");
+				}
 				
+				page="ReceberCarona.jsp";
 				
 			}
 		}
-		
 		
 		request.getRequestDispatcher(page).forward(request, response);
 				
 	}			
 			
-
 }
