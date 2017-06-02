@@ -1,0 +1,20 @@
+.login{
+	padding: 0.5em;
+	background-color:#ff3333
+
+}
+
+div.uptab{
+	color:#ffffff;
+}
+
+.cadastrar{
+	width:100%;
+	padding:1em;
+	font-size: 2rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  background: rgba(160, 179, 176, 0.25);
+  color: #ffffff;
+}
