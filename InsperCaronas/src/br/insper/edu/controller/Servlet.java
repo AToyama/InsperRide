@@ -104,44 +104,45 @@ public class Servlet extends HttpServlet {
 			page = "Home.jsp";
 		}
 		for (Caronas carona : caronas) {
-			if(request.getParameter("carona_"+carona.getPlaca())!=null){
-				int vagas=carona.getVagas();
-				String email = (String) session.getAttribute("user");
-				
-				if (vagas!=0){
-					if(vagas==4){
-						carona.setUsuarioId(dao.getUsuarioId(email));
-						dao.usuario4(carona);
-						vagas--;
-						carona.setVagas(vagas);
-						dao.updateVagas(carona);
+			if(request.getParameter("carona_"+carona.getEfetivada())=="nao"){
+				if(request.getParameter("carona_"+carona.getPlaca())!=null){
+					int vagas=carona.getVagas();
+					String email = (String) session.getAttribute("user");
+					
+					if (vagas!=0){
+						if(vagas==4){
+							carona.setUsuarioId(dao.getUsuarioId(email));
+							dao.usuario4(carona);
+							vagas--;
+							carona.setVagas(vagas);
+							dao.updateVagas(carona);
+						}
+						else if(vagas==3){
+							carona.setUsuarioId(dao.getUsuarioId(email));
+							dao.usuario3(carona);
+							vagas--;
+							carona.setVagas(vagas);
+							dao.updateVagas(carona);
+						}
+						else if(vagas==2){
+							carona.setUsuarioId(dao.getUsuarioId(email));
+							dao.usuario2(carona);
+							vagas--;
+							carona.setVagas(vagas);
+							dao.updateVagas(carona);
+						}
+						else if(vagas==1){
+							carona.setUsuarioId(dao.getUsuarioId(email));
+							dao.usuario1(carona);
+							vagas--;
+							carona.setVagas(vagas);
+							dao.updateVagas(carona);
+						}
 					}
-					else if(vagas==3){
-						carona.setUsuarioId(dao.getUsuarioId(email));
-						dao.usuario3(carona);
-						vagas--;
-						carona.setVagas(vagas);
-						dao.updateVagas(carona);
+					else{
+						System.out.println("não há vaga disponível");
 					}
-					else if(vagas==2){
-						carona.setUsuarioId(dao.getUsuarioId(email));
-						dao.usuario2(carona);
-						vagas--;
-						carona.setVagas(vagas);
-						dao.updateVagas(carona);
-					}
-					else if(vagas==1){
-						carona.setUsuarioId(dao.getUsuarioId(email));
-						dao.usuario1(carona);
-						vagas--;
-						carona.setVagas(vagas);
-						dao.updateVagas(carona);
-					}
-				}
-				else{
-					System.out.println("não há vaga disponível");
-				}
-				
+				}					
 				page="ReceberCarona.jsp";
 				
 				

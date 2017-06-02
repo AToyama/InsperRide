@@ -180,6 +180,22 @@ public class DAO {
 			e.printStackTrace();
 		}		
 	}
+
+	public void efetivaCarona(Caronas carona){
+		String sql = "UPDATE Caronas SET efetivada=? WHERE placa=?";
+		PreparedStatement stmt;
+		try {
+			stmt = (PreparedStatement) connection.preparedStatement(sql);
+			stmt.setString(1, carona.getEfetivada());
+			stmt = setString(2, carona.getPlaca());
+			stmt.execute();
+			stmt.close();
+		} catch (SQLException e) {
+			//TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
 	public List<Caronas> listaCaronas(){
 		List<Caronas> caronas = new ArrayList<Caronas>();
 		
