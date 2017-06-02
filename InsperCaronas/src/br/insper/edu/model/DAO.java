@@ -1,6 +1,8 @@
 package br.insper.edu.model;
 
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -12,6 +14,7 @@ import java.util.List;
 import com.mysql.jdbc.PreparedStatement;
 
 import br.insper.edu.controller.Usuarios;
+import sun.misc.BASE64Encoder;
 import br.insper.edu.controller.Caronas;
 
 
@@ -70,6 +73,63 @@ public class DAO {
         	e.printStackTrace();
         }
 		return usuarioId;
+	}
+	
+	public String getPhotoEmail(String email){
+		String sql = "SELECT photo from usuario where email=?";
+		PreparedStatement stmt;
+		Blob photo = null;
+		String image = null;
+		byte[] photoData = null;
+		BASE64Encoder base64 = new BASE64Encoder();
+		StringBuilder imageString = new StringBuilder();
+		ResultSet rs;
+		try{
+			stmt = (PreparedStatement) connection.prepareStatement(sql);
+			stmt.setString(1, email);
+			rs = stmt.executeQuery();
+			rs.next();
+			photo = rs.getBlob("photo");
+			photoData = photo.getBytes(1, (int)photo.length());
+			imageString.append("data:image/png;base64,");
+			imageString.append(base64.encode(photoData));
+			image = imageString.toString();
+			rs.close();
+			stmt.close();
+		}catch (SQLException e){
+        	// TODO Auto-generated catch block
+        	e.printStackTrace();
+        }
+		return image;
+		
+	}
+	public String getPhotoUsuarioId(int usuarioId){
+		String sql = "SELECT photo from usuario where id=?";
+		PreparedStatement stmt;
+		Blob photo = null;
+		String image = null;
+		byte[] photoData = null;
+		BASE64Encoder base64 = new BASE64Encoder();
+		StringBuilder imageString = new StringBuilder();
+		ResultSet rs;
+		try{
+			stmt = (PreparedStatement) connection.prepareStatement(sql);
+			stmt.setInt(1, usuarioId);
+			rs = stmt.executeQuery();
+			rs.next();
+			photo = rs.getBlob("photo");
+			photoData = photo.getBytes(1, (int)photo.length());
+			imageString.append("data:image/png;base64,");
+			imageString.append(base64.encode(photoData));
+			image = imageString.toString();
+			rs.close();
+			stmt.close();
+		}catch (SQLException e){
+        	// TODO Auto-generated catch block
+        	e.printStackTrace();
+        }
+		return image;
+		
 	}
 	public Timestamp getCurrentTime(){
 		Timestamp time = null;
@@ -185,9 +245,9 @@ public class DAO {
 		String sql = "UPDATE Caronas SET efetivada=? WHERE placa=?";
 		PreparedStatement stmt;
 		try {
-			stmt = (PreparedStatement) connection.preparedStatement(sql);
+			stmt = (PreparedStatement) connection.prepareStatement(sql);
 			stmt.setString(1, carona.getEfetivada());
-			stmt = setString(2, carona.getPlaca());
+			stmt.setString(2, carona.getPlaca());
 			stmt.execute();
 			stmt.close();
 		} catch (SQLException e) {
